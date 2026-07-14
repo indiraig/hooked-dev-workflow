@@ -12,7 +12,7 @@
 
 Imagine you are building a **React + FastAPI** application.
 
-You ask your AI coding assistant (GitHub Copilot, Claude Code, or OpenCode) to implement
+You ask your AI coding assistant (OpenCode and Claude model) to implement
 a new API, fix a bug, or refactor a feature. The AI updates multiple files. You review
 the changes and click **"Keep"**.
 
