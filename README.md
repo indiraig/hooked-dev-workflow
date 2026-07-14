@@ -132,71 +132,6 @@ Developer asks AI to change code
 ══════════════════════════════════════════
 ```
 
----
-
-## Project structure
-
-```
-ai-hooks-demo/
-├── backend/                  # FastAPI — User Search REST API
-│   ├── app/
-│   │   ├── main.py           # app entrypoint + CORS + /health
-│   │   ├── models.py         # SQLAlchemy models
-│   │   ├── schemas.py        # Pydantic schemas
-│   │   ├── repository.py     # data-access layer
-│   │   ├── routers/users.py  # user CRUD + search routes
-│   │   └── seed.py           # demo data
-│   ├── tests/                # pytest suite
-│   └── requirements.txt
-├── frontend/                 # React 18 + Vite — User Search UI
-│   ├── src/
-│   │   ├── components/UserSearch.jsx
-│   │   ├── services/userApi.js
-│   │   └── __tests__/        # vitest suite
-│   └── package.json
-├── hooks/                    # Workflow hook scripts
-│   ├── post-tool-use.sh      # PostToolUse: layer-aware validation
-│   ├── notify-team.sh        # Stop: team notification
-│   ├── pre-commit.sh         # git: standards + security
-│   ├── prepare-commit-msg.sh # git: commit-message generation
-│   ├── pre-push.sh           # git: final gate + PR summary
-│   ├── validate.sh           # standalone: run all tests
-│   ├── security-check.sh     # standalone: security scan
-│   ├── generate-report.sh    # standalone: developer report
-│   └── install-git-hooks.sh  # installs the git hooks
-├── opencode.json             # OpenCode hook configuration
-├── docker-compose.yml
-├── CHANGELOG.md
-└── README.md
-```
-
----
-
-## API contract
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/users` | Return all users |
-| GET | `/api/users/search?q=<term>` | Search by name, email, or department |
-| GET | `/api/users/{id}` | Get user by ID |
-| GET | `/api/users/role/{role}` | Get users by role (case-insensitive) |
-| POST | `/api/users` | Create a user |
-| PUT | `/api/users/{id}` | Update a user (partial) |
-| DELETE | `/api/users/{id}` | Delete a user |
-
-Example:
-
-```
-GET http://localhost:8080/api/users/search?q=john
-
-[
-  { "id": 1, "name": "John Doe", "email": "john.doe@example.com",
-    "role": "Engineer", "department": "Backend" }
-]
-```
-
----
-
 ## Prerequisites
 
 | Tool | Version |
@@ -205,70 +140,6 @@ GET http://localhost:8080/api/users/search?q=john
 | Node.js | 20+ |
 | pnpm | 9+ |
 | Docker + Docker Compose | 24+ (optional) |
-
----
-
-## Running locally
-
-### 1. Backend
-
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8080
-# API available at   http://localhost:8080
-# Swagger UI at      http://localhost:8080/docs
-```
-
-### 2. Frontend
-
-```bash
-cd frontend
-pnpm install
-pnpm dev
-# UI available at http://localhost:5173
-```
-
-### 3. Both via Docker Compose
-
-```bash
-docker-compose up --build
-# Frontend → http://localhost:5173
-# Backend  → http://localhost:8080
-```
-
----
-
-## Running tests
-
-```bash
-# FastAPI
-cd backend && pytest
-
-# React
-cd frontend && pnpm test
-```
-
----
-
-## Running the hooks manually
-
-```bash
-# From the project root
-bash hooks/validate.sh         # run all tests
-bash hooks/security-check.sh   # security scan
-bash hooks/generate-report.sh  # print the developer report
-bash hooks/pre-push.sh         # final gate + PR summary
-```
-
-### Installing the git hooks
-
-```bash
-bash hooks/install-git-hooks.sh
-# wires pre-commit, prepare-commit-msg, and pre-push into .git/hooks
-```
 
 ---
 
@@ -290,22 +161,6 @@ Hooks are declared in `opencode.json`:
   }
 }
 ```
-
-`PostToolUse` fires only after you approve an AI file change; the script reads the JSON
-payload OpenCode sends on `stdin`, detects whether the changed file is frontend or
-backend, and runs only the relevant checks.
-
----
-
-## The takeaway
-
-> The one repetitive validation step you perform before every `git push` — the one you
-> wish could be automated — is exactly the kind of step a hook is built to own.
-
-AI assistants write the code. Hooks make sure it meets your team's bar *before* it ever
-reaches GitHub.
-
----
 
 ## License
 
