@@ -19,19 +19,19 @@ the changes and click **"Keep"**.
 Now comes the familiar routine before pushing to the `develop` branch. Do you do these
 steps *every single time*?
 
-- ✅ Review all AI-modified files
-- ✅ Verify coding standards
-- ✅ Run backend tests (`pytest`)
-- ✅ Build / start the application and check startup logs
-- ✅ Run React tests
-- ✅ Run ESLint / Prettier
-- ✅ Verify API contracts
-- ✅ Check dependency vulnerabilities
-- ✅ Write a meaningful commit message
-- ✅ Update the CHANGELOG (if required)
-- ✅ Push to GitHub
-- ✅ Create a Pull Request + write a PR description
-- ✅ Wait for CI to discover issues you could have caught earlier
+-  Review all AI-modified files
+-  Verify coding standards
+-  Run backend tests (`pytest`)
+-  Build / start the application and check startup logs
+-  Run React tests
+-  Run ESLint / Prettier
+-  Verify API contracts
+-  Check dependency vulnerabilities
+-  Write a meaningful commit message
+-  Update the CHANGELOG (if required)
+-  Push to GitHub
+-  Create a Pull Request + write a PR description
+-  Wait for CI to discover issues you could have caught earlier
 
 Most developers do some — or all — of these steps every day.
 
@@ -78,59 +78,7 @@ automated engineering teammate.
 - Notify the team with a summary of everything that changed
 
 ---
-
-## Hook lifecycle
-
-```
-Developer asks AI to change code
-        │
-        ▼
-   AI edits a file  →  you approve / press "Keep"
-        │
-        ▼  PostToolUse hook fires
-  ┌───────────────────────────────┐
-  │  post-tool-use.sh             │  → detects layer (frontend / backend)
-  │                               │  → React:  pnpm test + eslint + vite build
-  │                               │  → FastAPI: pytest + API-contract check
-  └───────────────────────────────┘
-        │
-        ▼  git commit
-  ┌───────────────────────────────┐
-  │  pre-commit.sh                │  → standards + security scan
-  │  prepare-commit-msg.sh        │  → meaningful commit message
-  └───────────────────────────────┘
-        │
-        ▼  git push
-  ┌───────────────────────────────┐
-  │  pre-push.sh                  │  → full test suite (FINAL GATE)
-  │                               │  → API-contract diff
-  │                               │  → PR summary → pr-summary.md
-  └───────────────────────────────┘
-        │
-        ▼  AI session ends
-  ┌───────────────────────────────┐
-  │  notify-team.sh               │  → team notification + change summary
-  └───────────────────────────────┘
-```
-
-### Example pre-push output
-
-```
-══════════════════════════════════════════
-  PRE-PUSH GATE — Final check before GitHub
-══════════════════════════════════════════
-  1. FULL TEST SUITE
-  [PASS] React        PASSED
-  2. SECURITY SCAN
-  [PASS] Security scan  PASSED
-  3. API CONTRACT
-  [PASS] API contract unchanged
-  5. GENERATING PR SUMMARY
-  [PASS] PR summary written to pr-summary.md
-══════════════════════════════════════════
-  PRE-PUSH PASSED — your code is ready for GitHub
-══════════════════════════════════════════
-```
+``
 
 ## Prerequisites
 
