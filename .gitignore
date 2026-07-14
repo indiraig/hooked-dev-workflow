@@ -1,0 +1,39 @@
+# ---- Python (FastAPI backend) ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+backend/.venv/
+.venv/
+venv/
+env/
+*.db
+*.sqlite3
+
+# ---- Node / pnpm (React frontend) ----
+frontend/node_modules/
+frontend/dist/
+node_modules/
+dist/
+
+# ---- Environment secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Legacy Java / Maven build output (project migrated to FastAPI) ----
+backend/target/
+*.class
+*.jar
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# ---- Generated reports ----
+TEAM_NOTIFICATION.md
+developer-report.txt

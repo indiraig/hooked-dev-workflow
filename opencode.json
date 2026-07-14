@@ -1,0 +1,42 @@
+{
+  "$schema": "https://opencode.ai/config.schema.json",
+
+  "hooks": {
+    "PostToolUse": [
+      {
+        "comment": "Fires ONLY when the AI writes or edits a file after you approve/press Enter.",
+        "matcher": { "tool": "write_file" },
+        "command": "bash hooks/post-tool-use.sh"
+      },
+      {
+        "comment": "Same for patch/edit operations.",
+        "matcher": { "tool": "edit_file" },
+        "command": "bash hooks/post-tool-use.sh"
+      },
+      {
+        "comment": "Covers multi-block patch operations.",
+        "matcher": { "tool": "patch_file" },
+        "command": "bash hooks/post-tool-use.sh"
+      }
+    ],
+    "Stop": [
+      {
+        "comment": "When the AI finishes a session — notify team with change summary.",
+        "command": "bash hooks/notify-team.sh"
+      }
+    ]
+  },
+
+  "model": "anthropic/claude-sonnet-4-5",
+
+  "instructions": [
+    "This is the ai-hooks-demo project: Spring Boot 3 + React 18.",
+    "Backend: backend/  |  Frontend: frontend/  |  Hooks: hooks/",
+    "After every approved file change the hooks automatically validate and report.",
+    "Never hardcode passwords, tokens, or API keys in source files.",
+    "Always write tests alongside new features.",
+    "Follow REST conventions: use nouns for endpoints, correct HTTP verbs.",
+    "Java style: constructor injection, no field injection, no Lombok unless agreed.",
+    "React style: functional components only, hooks for state, no class components."
+  ]
+}
