@@ -186,10 +186,10 @@ if $is_backend; then
     # Compare current endpoints to baseline; flag removed/renamed ones
     info "Validating API contract..."
     BASELINE="$ROOT_DIR/hooks/.api-baseline.txt"
-    CURRENT=$(grep -rh \
-      "@GetMapping\|@PostMapping\|@PutMapping\|@DeleteMapping\|@PatchMapping\|@RequestMapping" \
-      "$BACKEND_DIR/src/main" 2>/dev/null | \
-      grep -oE '"[^"]+"' | sort -u || true)
+    CURRENT=$(grep -rhoE \
+      '@(router|app)\.(get|post|put|delete|patch)\("[^"]*"' \
+      "$BACKEND_DIR/app" 2>/dev/null | \
+      grep -oE '"[^"]*"' | sort -u || true)
 
     if [[ -f "$BASELINE" ]]; then
       REMOVED=$(comm -23 \

@@ -131,10 +131,11 @@ echo -e "${BOLD}  3. API CONTRACT${RESET}"
 API_STATUS="No Breaking Changes"
 BASELINE="$ROOT_DIR/hooks/.api-baseline.txt"
 
-CURRENT_EPS=$(grep -rh \
-  "@GetMapping\|@PostMapping\|@PutMapping\|@DeleteMapping\|@PatchMapping" \
-  "$BACKEND_DIR/src/main" 2>/dev/null | \
-  grep -oE '"[^"]+"' | sort -u || true)
+# FastAPI routes: @router.get("/path") / @app.post("/path") etc.
+CURRENT_EPS=$(grep -rhoE \
+  '@(router|app)\.(get|post|put|delete|patch)\("[^"]*"' \
+  "$BACKEND_DIR/app" 2>/dev/null | \
+  grep -oE '"[^"]*"' | sort -u || true)
 
 if [[ -f "$BASELINE" ]]; then
   REMOVED=$(comm -23 <(sort "$BASELINE") <(echo "$CURRENT_EPS" | sort) | wc -l | tr -d ' ')
@@ -164,13 +165,13 @@ echo ""
 echo -e "${BOLD}  4. IMPACTED MODULES${RESET}"
 
 MODULES=()
-echo "$CHANGED" | grep -q "backend/src/main/java" && MODULES+=("Backend (Java source)")
-echo "$CHANGED" | grep -q "backend/src/test"      && MODULES+=("Backend Tests")
+echo "$CHANGED" | grep -q "backend/app"           && MODULES+=("Backend (FastAPI source)")
+echo "$CHANGED" | grep -q "backend/tests"          && MODULES+=("Backend Tests")
 echo "$CHANGED" | grep -q "frontend/src"          && MODULES+=("Frontend (React)")
 echo "$CHANGED" | grep -q "frontend/src/__tests__" && MODULES+=("Frontend Tests")
 echo "$CHANGED" | grep -q "hooks/"                && MODULES+=("CI/CD Hooks")
 echo "$CHANGED" | grep -q "docker-compose"        && MODULES+=("Docker Compose")
-echo "$CHANGED" | grep -qE "pom\.xml"             && MODULES+=("Maven Dependencies")
+echo "$CHANGED" | grep -qE "requirements\.txt"    && MODULES+=("Python Dependencies")
 echo "$CHANGED" | grep -qE "package\.json"        && MODULES+=("NPM Dependencies")
 echo "$CHANGED" | grep -q "opencode.json"         && MODULES+=("OpenCode Config")
 
@@ -211,7 +212,7 @@ $RECENT_COMMITS
 
 ## Impacted Modules
 
-$(printf '- %s\n' "${MODULES[@]}")
+$(printf -- '- %s\n' "${MODULES[@]}")
 
 ## Test Results
 
